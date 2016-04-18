@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Prestamos" EntityType="Model1.Prestamos" />
+    <EntitySet Name="Activos" EntityType="Model1.Activos" />
+    <AssociationSet Name="PrestamosActivos" Association="Model1.PrestamosActivos">
+      <End Role="Prestamos" EntitySet="Prestamos" />
+      <End Role="Activos" EntitySet="Activos" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Prestamos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NumeroBoleta" Type="String" Nullable="false" />
+    <Property Name="Motivo" Type="String" Nullable="false" />
+    <Property Name="FechaSolicitud" Type="DateTime" Nullable="false" />
+    <Property Name="FechaRetiro" Type="DateTime" Nullable="false" />
+    <Property Name="PeriodoUso" Type="Int32" Nullable="false" />
+    <Property Name="SoftwareReq" Type="String" Nullable="false" />
+    <Property Name="ObservacionesSolicitante" Type="String" Nullable="false" />
+    <Property Name="ObservacionesAprobado" Type="String" Nullable="false" />
+    <Property Name="ObservacionesRecibido" Type="String" Nullable="false" />
+    <Property Name="ComplexProperty" Type="Model1.equipo" Nullable="false" />
+    <NavigationProperty Name="Activos" Relationship="Model1.PrestamosActivos" FromRole="Prestamos" ToRole="Activos" />
+  </EntityType>
+  <ComplexType Name="equipo">
+    <Property Type="String" Name="Categoria" Nullable="false" />
+    <Property Type="Int32" Name="cantidad" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="Activos">
+    <Key>
+      <PropertyRef Name="Placa" />
+    </Key>
+    <Property Name="Placa" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Name="categoria" Type="String" Nullable="false" />
+    <Property Name="Marca" Type="String" Nullable="false" />
+    <Property Name="Estado" Type="Int16" Nullable="false" />
+    <Property Name="Prestable" Type="Int16" Nullable="false" />
+    <NavigationProperty Name="Prestamos" Relationship="Model1.PrestamosActivos" FromRole="Activos" ToRole="Prestamos" />
+  </EntityType>
+  <Association Name="PrestamosActivos">
+    <End Type="Model1.Prestamos" Role="Prestamos" Multiplicity="*" />
+    <End Type="Model1.Activos" Role="Activos" Multiplicity="*" />
+  </Association>
+</Schema>
