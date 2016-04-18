@@ -4,11 +4,80 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
-        <EntityContainer Name="Model1TargetContainer" >
-        </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Prestamos" EntityType="Model1.Store.Prestamos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Activos" EntityType="Model1.Store.Activos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PrestamosActivos" EntityType="Model1.Store.PrestamosActivos" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_PrestamosActivos_Prestamos" Association="Model1.Store.FK_PrestamosActivos_Prestamos">
+      <End Role="Prestamos" EntitySet="Prestamos" />
+      <End Role="PrestamosActivos" EntitySet="PrestamosActivos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PrestamosActivos_Activos" Association="Model1.Store.FK_PrestamosActivos_Activos">
+      <End Role="Activos" EntitySet="Activos" />
+      <End Role="PrestamosActivos" EntitySet="PrestamosActivos" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Prestamos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NumeroBoleta" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Motivo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaSolicitud" Type="datetime" Nullable="false" />
+    <Property Name="FechaRetiro" Type="datetime" Nullable="false" />
+    <Property Name="PeriodoUso" Type="int" Nullable="false" />
+    <Property Name="SoftwareReq" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ObservacionesSolicitante" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ObservacionesAprobado" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ObservacionesRecibido" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ComplexProperty_Categoria" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ComplexProperty_cantidad" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Activos">
+    <Key>
+      <PropertyRef Name="Placa" />
+    </Key>
+    <Property Name="Placa" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="categoria" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Marca" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Estado" Type="smallint" Nullable="false" />
+    <Property Name="Prestable" Type="smallint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PrestamosActivos">
+    <Key>
+      <PropertyRef Name="Prestamos_Id" />
+      <PropertyRef Name="Activos_Placa" />
+    </Key>
+    <Property Name="Prestamos_Id" Type="int" Nullable="false" />
+    <Property Name="Activos_Placa" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_PrestamosActivos_Prestamos">
+    <End Role="Prestamos" Type="Model1.Store.Prestamos" Multiplicity="1" />
+    <End Role="PrestamosActivos" Type="Model1.Store.PrestamosActivos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Prestamos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PrestamosActivos">
+        <PropertyRef Name="Prestamos_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PrestamosActivos_Activos">
+    <End Role="PrestamosActivos" Type="Model1.Store.PrestamosActivos" Multiplicity="*" />
+    <End Role="Activos" Type="Model1.Store.Activos" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Activos">
+        <PropertyRef Name="Placa" />
+      </Principal>
+      <Dependent Role="PrestamosActivos">
+        <PropertyRef Name="Activos_Placa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
@@ -60,13 +129,49 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
-        <Alias Key="Model" Value="Model1" />
-        <Alias Key="Target" Value="Model1.Store" />
-        <EntityContainerMapping CdmEntityContainer="Model1Container" StorageEntityContainer="Model1TargetContainer">
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Prestamos">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Prestamos)">
+        <MappingFragment StoreEntitySet="Prestamos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="NumeroBoleta" ColumnName="NumeroBoleta" />
+          <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+          <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+          <ScalarProperty Name="FechaRetiro" ColumnName="FechaRetiro" />
+          <ScalarProperty Name="PeriodoUso" ColumnName="PeriodoUso" />
+          <ScalarProperty Name="SoftwareReq" ColumnName="SoftwareReq" />
+          <ScalarProperty Name="ObservacionesSolicitante" ColumnName="ObservacionesSolicitante" />
+          <ScalarProperty Name="ObservacionesAprobado" ColumnName="ObservacionesAprobado" />
+          <ScalarProperty Name="ObservacionesRecibido" ColumnName="ObservacionesRecibido" />
+          <ComplexProperty Name="ComplexProperty" TypeName="Model1.equipo">
+            <ScalarProperty Name="Categoria" ColumnName="ComplexProperty_Categoria" />
+            <ScalarProperty Name="cantidad" ColumnName="ComplexProperty_cantidad" />
+          </ComplexProperty>
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Activos">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Activos)">
+        <MappingFragment StoreEntitySet="Activos">
+          <ScalarProperty Name="Placa" ColumnName="Placa" />
+          <ScalarProperty Name="categoria" ColumnName="categoria" />
+          <ScalarProperty Name="Marca" ColumnName="Marca" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Prestable" ColumnName="Prestable" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PrestamosActivos" TypeName="Model1.PrestamosActivos" StoreEntitySet="PrestamosActivos">
+      <EndProperty Name="Prestamos">
+        <ScalarProperty Name="Id" ColumnName="Prestamos_Id" />
+      </EndProperty>
+      <EndProperty Name="Activos">
+        <ScalarProperty Name="Placa" ColumnName="Activos_Placa" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -80,6 +185,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->

@@ -1,4 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
-  <EntityContainer Name="Model1TargetContainer" />
+<Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Prestamos" EntityType="Model1.Store.Prestamos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Activos" EntityType="Model1.Store.Activos" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PrestamosActivos" EntityType="Model1.Store.PrestamosActivos" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_PrestamosActivos_Prestamos" Association="Model1.Store.FK_PrestamosActivos_Prestamos">
+      <End Role="Prestamos" EntitySet="Prestamos" />
+      <End Role="PrestamosActivos" EntitySet="PrestamosActivos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PrestamosActivos_Activos" Association="Model1.Store.FK_PrestamosActivos_Activos">
+      <End Role="Activos" EntitySet="Activos" />
+      <End Role="PrestamosActivos" EntitySet="PrestamosActivos" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Prestamos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NumeroBoleta" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Motivo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FechaSolicitud" Type="datetime" Nullable="false" />
+    <Property Name="FechaRetiro" Type="datetime" Nullable="false" />
+    <Property Name="PeriodoUso" Type="int" Nullable="false" />
+    <Property Name="SoftwareReq" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ObservacionesSolicitante" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ObservacionesAprobado" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ObservacionesRecibido" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ComplexProperty_Categoria" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ComplexProperty_cantidad" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Activos">
+    <Key>
+      <PropertyRef Name="Placa" />
+    </Key>
+    <Property Name="Placa" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="categoria" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Marca" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Estado" Type="smallint" Nullable="false" />
+    <Property Name="Prestable" Type="smallint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PrestamosActivos">
+    <Key>
+      <PropertyRef Name="Prestamos_Id" />
+      <PropertyRef Name="Activos_Placa" />
+    </Key>
+    <Property Name="Prestamos_Id" Type="int" Nullable="false" />
+    <Property Name="Activos_Placa" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_PrestamosActivos_Prestamos">
+    <End Role="Prestamos" Type="Model1.Store.Prestamos" Multiplicity="1" />
+    <End Role="PrestamosActivos" Type="Model1.Store.PrestamosActivos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Prestamos">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PrestamosActivos">
+        <PropertyRef Name="Prestamos_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PrestamosActivos_Activos">
+    <End Role="PrestamosActivos" Type="Model1.Store.PrestamosActivos" Multiplicity="*" />
+    <End Role="Activos" Type="Model1.Store.Activos" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Activos">
+        <PropertyRef Name="Placa" />
+      </Principal>
+      <Dependent Role="PrestamosActivos">
+        <PropertyRef Name="Activos_Placa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

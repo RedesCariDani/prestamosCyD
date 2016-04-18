@@ -1,6 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
-  <Alias Key="Model" Value="Model1" />
-  <Alias Key="Target" Value="Model1.Store" />
-  <EntityContainerMapping CdmEntityContainer="Model1Container" StorageEntityContainer="Model1TargetContainer" />
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Prestamos">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Prestamos)">
+        <MappingFragment StoreEntitySet="Prestamos">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="NumeroBoleta" ColumnName="NumeroBoleta" />
+          <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+          <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+          <ScalarProperty Name="FechaRetiro" ColumnName="FechaRetiro" />
+          <ScalarProperty Name="PeriodoUso" ColumnName="PeriodoUso" />
+          <ScalarProperty Name="SoftwareReq" ColumnName="SoftwareReq" />
+          <ScalarProperty Name="ObservacionesSolicitante" ColumnName="ObservacionesSolicitante" />
+          <ScalarProperty Name="ObservacionesAprobado" ColumnName="ObservacionesAprobado" />
+          <ScalarProperty Name="ObservacionesRecibido" ColumnName="ObservacionesRecibido" />
+          <ComplexProperty Name="ComplexProperty" TypeName="Model1.equipo">
+            <ScalarProperty Name="Categoria" ColumnName="ComplexProperty_Categoria" />
+            <ScalarProperty Name="cantidad" ColumnName="ComplexProperty_cantidad" />
+          </ComplexProperty>
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Activos">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Activos)">
+        <MappingFragment StoreEntitySet="Activos">
+          <ScalarProperty Name="Placa" ColumnName="Placa" />
+          <ScalarProperty Name="categoria" ColumnName="categoria" />
+          <ScalarProperty Name="Marca" ColumnName="Marca" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Prestable" ColumnName="Prestable" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PrestamosActivos" TypeName="Model1.PrestamosActivos" StoreEntitySet="PrestamosActivos">
+      <EndProperty Name="Prestamos">
+        <ScalarProperty Name="Id" ColumnName="Prestamos_Id" />
+      </EndProperty>
+      <EndProperty Name="Activos">
+        <ScalarProperty Name="Placa" ColumnName="Activos_Placa" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
 </Mapping>

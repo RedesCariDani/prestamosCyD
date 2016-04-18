@@ -1,0 +1,87 @@
+﻿@model IEnumerable<prestamos.Models.Prestamos>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NumeroBoleta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Motivo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaSolicitud)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaRetiro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PeriodoUso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SoftwareReq)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ObservacionesSolicitante)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ObservacionesAprobado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ObservacionesRecibido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ComplexProperty)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumeroBoleta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Motivo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaSolicitud)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaRetiro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PeriodoUso)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SoftwareReq)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ObservacionesSolicitante)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ObservacionesAprobado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ObservacionesRecibido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ComplexProperty)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
