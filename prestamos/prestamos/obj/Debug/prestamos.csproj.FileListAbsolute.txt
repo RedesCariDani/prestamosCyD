@@ -79,3 +79,4 @@ C:\Users\Daniel\Desktop\prestamosCyD\prestamos\prestamos\bin\Microsoft.Owin.Secu
 C:\Users\Daniel\Desktop\prestamosCyD\prestamos\prestamos\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Daniel\Desktop\prestamosCyD\prestamos\prestamos\obj\Debug\prestamos.dll
 C:\Users\Daniel\Desktop\prestamosCyD\prestamos\prestamos\obj\Debug\prestamos.pdb
+C:\Users\Daniel\Desktop\prestamosCyD\prestamos\prestamos\obj\Debug\prestamos.csprojResolveAssemblyReference.cache
